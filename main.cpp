@@ -4,10 +4,8 @@
 #include "lib/Image.h"
 
 int main() {
-  Image x(10, 10);
-  const char* file_ppm = "../data/tsu1.pgm";
+  Image x;
+  const char* file_ppm = "../data/tsu1.pgm1";
   x.ReadFromDisk(file_ppm);
-  // Eigen::MatrixXf f =  x.image_data.cast <float> ();
-  std::cout << x.image_data;
-  x.WriteToDisk("trest.jpg");
+  x.WriteToDisk("test.jpg");
 }

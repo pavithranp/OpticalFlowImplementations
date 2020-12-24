@@ -7,15 +7,14 @@
 #include <vector>
 #include <fstream>
 
-typedef Eigen::Matrix<unsigned char, -1, -1> matrixc; 
+ 
 
 class Image {
  public:
   // Constructors
-  Image(int rows, int cols) : rows_{rows}, cols_{cols} {}
+  Image() = default;
 
   // Getter functions
-  matrixc image_data;
   int get_rows() { return rows_; }
   int get_cols() { return cols_; }
 
@@ -29,5 +28,5 @@ class Image {
   int cols_ = 0;
   int channels_ = 0;
   int max_val_ = 255;
-  
+  Eigen::MatrixXf image_data;
 };
