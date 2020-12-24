@@ -7,6 +7,7 @@
 #include <vector>
 #include <fstream>
 
+
 class Image {
  public:
   // Constructors
@@ -25,12 +26,13 @@ class Image {
   // void UpScale(int scale);
 
   // Reading & Writing Images from disk
-  bool ReadFromDisk(const std::string &file_name);
+  bool ReadFromDisk(const char* file_name);
   void WriteToDisk(const std::string &file_name);
 
  private:
   // Private member variables
   int rows_ = 0;
   int cols_ = 0;
+  int channels_ = 0;
   int max_val_ = 255;
 };

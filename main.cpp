@@ -5,7 +5,7 @@
 
 int main() {
   Image x(10, 10);
-  const std::string file_ppm = "../data/tsu1.pgm";
+  const char* file_ppm = "../data/tsu1.pgm";
   x.ReadFromDisk(file_ppm);
   // Matrix3d m = Matrix3d::Random();
   // m = (m + Matrix3d::Constant(1.2)) * 50;
