@@ -7,23 +7,21 @@
 #include <vector>
 #include <fstream>
 
+typedef Eigen::Matrix<unsigned char, -1, -1> matrixc; 
 
 class Image {
  public:
   // Constructors
-  Image(int rows, int cols) : rows_{rows}, cols_{cols} {
-    // function to read
-    
-  }
+  Image(int rows, int cols) : rows_{rows}, cols_{cols} {}
 
   // Getter functions
-  Eigen ::MatrixXd image_data;
+  matrixc image_data;
   int get_rows() { return rows_; }
   int get_cols() { return cols_; }
 
   // Reading & Writing Images from disk
   bool ReadFromDisk(const char* file_name);
-  void WriteToDisk(const std::string &file_name);
+  void WriteToDisk(const char* file_name);
 
  private:
   // Private member variables

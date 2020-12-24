@@ -8,6 +8,7 @@ enable_testing()
 file(GLOB SOURCES
     lib/*.h
     lib/*.cpp
+    lib/stb/*.h
 )
 add_executable(opticalFlow main.cpp ${SOURCES})
 
