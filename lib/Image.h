@@ -13,17 +13,13 @@ class Image {
   // Constructors
   Image(int rows, int cols) : rows_{rows}, cols_{cols} {
     // function to read
-    Eigen ::MatrixXd x(rows, cols);
-    std::cout << "x:" << std::endl << x;
+    
   }
 
   // Getter functions
+  Eigen ::MatrixXd image_data;
   int get_rows() { return rows_; }
   int get_cols() { return cols_; }
-
-  // Dowscaling and Upscaling functions
-  // void DownScale(int scale);
-  // void UpScale(int scale);
 
   // Reading & Writing Images from disk
   bool ReadFromDisk(const char* file_name);
@@ -35,4 +31,5 @@ class Image {
   int cols_ = 0;
   int channels_ = 0;
   int max_val_ = 255;
+  
 };
