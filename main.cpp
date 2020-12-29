@@ -1,11 +1,11 @@
 
 #include <Eigen/Dense>
 #include <iostream>
-#include "lib/Image.h"
+#include "src/Image.h"
 
 int main() {
   Image x;
-  const char* file_ppm = "../data/tsu1.pgm1";
+  const char* file_ppm = "../data/tsu1.pgm";
   x.ReadFromDisk(file_ppm);
   x.WriteToDisk("test.jpg");
 }

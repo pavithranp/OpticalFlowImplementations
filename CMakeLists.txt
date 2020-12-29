@@ -9,6 +9,8 @@ file(GLOB SOURCES
     lib/*.h
     lib/*.cpp
     lib/stb/*.h
+    src/*.h
+    src/*.cpp
 )
 add_executable(opticalFlow main.cpp ${SOURCES})
 

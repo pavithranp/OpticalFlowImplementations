@@ -33,7 +33,12 @@ void Image::WriteToDisk(const char* file_name)
         return;
     }
     image_data = image_data.cwiseAbs();
-    std::cout << image_data.size();
+    if ( rows_ != image_data.rows() ||
+        cols_ != image_data.cols() ||
+        channels_ != image_data.rows()*image_data.cols()/image_data.size()) {
+        std::cout << " image matrix has wrong dimensions" << std::endl;
+        return;
+    }
     Eigen::Matrix<unsigned char, Eigen::Dynamic,
         Eigen::Dynamic> temp = image_data.cast<unsigned char>();
     unsigned char *img = temp.data();
