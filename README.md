@@ -5,4 +5,4 @@ A simple library with Implementations of various OpticalFlow methods using Class
 
 ## Uses:
 * stb_image headers
-* Eigen Library
+* Eigen3 Library
