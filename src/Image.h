@@ -7,8 +7,6 @@
 #include <vector>
 #include <fstream>
 
- 
-
 class Image {
  public:
   // Constructors

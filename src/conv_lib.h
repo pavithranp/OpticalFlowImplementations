@@ -12,6 +12,13 @@ float sigmay         /* in  : std. dev. of Gaussian in z-direction           */
                      /********************************************************/
 ) {
 
+Eigen::VectorxXf maskx(hx);
+Eigen::VectorxXf masky(hy);
+
+
+
 }
+
+
 
 }
