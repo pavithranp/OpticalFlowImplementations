@@ -15,7 +15,7 @@ class Image {
   // Getter functions
   int get_rows() { return rows_; }
   int get_cols() { return cols_; }
-
+  Eigen::MatrixXf image_data;
   // Reading & Writing Images from disk
   bool ReadFromDisk(const char* file_name);
   void WriteToDisk(const char* file_name);
@@ -26,5 +26,5 @@ class Image {
   int cols_ = 0;
   int channels_ = 0;
   int max_val_ = 255;
-  Eigen::MatrixXf image_data;
+  
 };
