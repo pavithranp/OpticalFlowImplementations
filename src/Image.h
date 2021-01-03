@@ -19,6 +19,7 @@ class Image {
   // Reading & Writing Images from disk
   bool ReadFromDisk(const char* file_name);
   void WriteToDisk(const char* file_name);
+  void add_padding(int ,int);
 
  private:
   // Private member variables

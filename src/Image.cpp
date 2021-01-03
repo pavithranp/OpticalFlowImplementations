@@ -45,22 +45,22 @@ void Image::add_padding(int padX, int padY) {
 int rl = rows_, cl = cols_;
 
 Eigen::MatrixXf B(rl+padX, cl+padY);
-B.block(padX/2, padY/2, rl, cl) = input;
-cout << input.row(0).replicate(2, 1) << endl;
+B.block(padX/2, padY/2, rl, cl) = image_data;
+// cout << input.row(0).replicate(2, 1) << endl;
 // top-bot row and left-right column fill
-B.block(0, padY/2, padX/2, cl) = input.row(0).replicate(padX/2, 1);
-B.block(rl+padX/2, padY/2, padX/2, cl) = input.row(rl-1).replicate(padX/2, 1);
-B.block(padX/2, 0, rl, padY/2) = input.col(0).replicate(1, padY/2);
-B.block(padX/2, cl+padY/2, rl, padY/2) = input.col(cl-1).replicate(1, padY/2);
+B.block(0, padY/2, padX/2, cl) = image_data.row(0).replicate(padX/2, 1);
+B.block(rl+padX/2, padY/2, padX/2, cl) = image_data.row(rl-1).replicate(padX/2, 1);
+B.block(padX/2, 0, rl, padY/2) = image_data.col(0).replicate(1, padY/2);
+B.block(padX/2, cl+padY/2, rl, padY/2) = image_data.col(cl-1).replicate(1, padY/2);
 // corner squares
 B.block(0, 0, padX/2, padY/2) =
-            Eigen::MatrixXf::Constant(padX/2, padY/2, input.coeff(0, 0));
+            Eigen::MatrixXf::Constant(padX/2, padY/2, image_data.coeff(0, 0));
 B.block(0, cl+padY/2, padX/2, padY/2) =
-            Eigen::MatrixXf::Constant(padX/2, padY/2, input.coeff(0, cl-1));
+            Eigen::MatrixXf::Constant(padX/2, padY/2, image_data.coeff(0, cl-1));
 B.block(rl+padX/2, 0, padX/2, padY/2) =
-            Eigen::MatrixXf::Constant(padX/2, padY/2, input.coeff(rl-1, 0));
+            Eigen::MatrixXf::Constant(padX/2, padY/2, image_data.coeff(rl-1, 0));
 B.block(rl+padX/2, cl+padY/2, padX/2, padY/2) =
-            Eigen::MatrixXf::Constant(padX/2, padY/2, input.coeff(rl-1, cl-1));
+            Eigen::MatrixXf::Constant(padX/2, padY/2, image_data.coeff(rl-1, cl-1));
 
 image_data = B;
 }
