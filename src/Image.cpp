@@ -40,3 +40,27 @@ void Image::WriteToDisk(const char* file_name)
     stbi_write_jpg(file_name, rows_, cols_, 1, img, rows_*1);
     // stbi_image_free(img);
 }
+
+void Image::add_padding(int padX, int padY) {
+int rl = rows_, cl = cols_;
+
+Eigen::MatrixXf B(rl+padX, cl+padY);
+B.block(padX/2, padY/2, rl, cl) = input;
+cout << input.row(0).replicate(2, 1) << endl;
+// top-bot row and left-right column fill
+B.block(0, padY/2, padX/2, cl) = input.row(0).replicate(padX/2, 1);
+B.block(rl+padX/2, padY/2, padX/2, cl) = input.row(rl-1).replicate(padX/2, 1);
+B.block(padX/2, 0, rl, padY/2) = input.col(0).replicate(1, padY/2);
+B.block(padX/2, cl+padY/2, rl, padY/2) = input.col(cl-1).replicate(1, padY/2);
+// corner squares
+B.block(0, 0, padX/2, padY/2) =
+            Eigen::MatrixXf::Constant(padX/2, padY/2, input.coeff(0, 0));
+B.block(0, cl+padY/2, padX/2, padY/2) =
+            Eigen::MatrixXf::Constant(padX/2, padY/2, input.coeff(0, cl-1));
+B.block(rl+padX/2, 0, padX/2, padY/2) =
+            Eigen::MatrixXf::Constant(padX/2, padY/2, input.coeff(rl-1, 0));
+B.block(rl+padX/2, cl+padY/2, padX/2, padY/2) =
+            Eigen::MatrixXf::Constant(padX/2, padY/2, input.coeff(rl-1, cl-1));
+
+image_data = B;
+}

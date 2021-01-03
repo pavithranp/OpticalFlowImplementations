@@ -5,20 +5,6 @@
 #include "src/conv_lib.h"
 
 
-MatrixXf block_matching( MatrixXf A,  MatrixXf V)
-{
-  //make functor
-
-  int P = V.cols() > V.rows() ? V.cols()/2 : V.rows()/2;
-
-  MatrixXf B = MatrixXf::Zero(A.rows()+(2*P),A.cols()+(2*P));
-
-  B.block(P, P, A.rows(), A.cols()) = A;
-  return MatrixXf::NullaryExpr(A.rows(), A.cols(), [&B,&V] (Index i,Index j) {
-        return (V.array() * B.block (i,j, V.rows(),V.cols()).array()).sum();
-        });
-}
-
 MatrixXf padding(MatrixXf input, int padX, int padY) {
 int rl = input.rows(), cl = input.cols();
 
@@ -43,11 +29,7 @@ B.block(rl+padX/2, cl+padY/2, padX/2, padY/2) =
 return B;
 }
 
-struct padYpad {
-  Index size() const { return m_out_size; }
-  Index operator[] (Index i) const { return std::max<Index>(0,i);}//(m_out_size-m_in_size)); }
-  Index m_in_size, m_out_size;
-};
+
 
 int main()
 {

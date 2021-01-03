@@ -2,7 +2,7 @@
 using namespace Eigen;
 using namespace std;
 
-MatrixXf Conv1D( MatrixXf A,  MatrixXf V)
+MatrixXf Conv( MatrixXf A,  MatrixXf V)
 {
   //make functor
 
@@ -29,4 +29,6 @@ kernel = kernel/kernel.sum();
 return kernel;
 
 }
+
+
 
