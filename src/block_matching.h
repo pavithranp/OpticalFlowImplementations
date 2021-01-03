@@ -30,6 +30,7 @@ MatrixXf BlockMatching(MatrixXf A, MatrixXf B, int sx, int sy, int block = 3){
     MatrixXf::NullaryExpr(A.rows(), A.cols(), [&Apad, &Bpad] (Index i, Index j) {
         MatrixXf A_block = A.block(i,j,block,block)
 
+        Distance D = SearchSpace(B,A_block);
 
         // loop through search window size on 2nd image
             // locate blocks around two imgs
@@ -41,9 +42,23 @@ MatrixXf BlockMatching(MatrixXf A, MatrixXf B, int sx, int sy, int block = 3){
 
 }
 
-MatrixXf SearchSpace(MatrixXf A_block, MatrixXf B, int sx, int sy, int block = 3){
-    
-    MatrixXf::NullaryExpr(A.rows(), A.cols(), [&Apad, &Bpad] (Index i, Index j) {
+Distance SearchSpace( MatrixXf A,  MatrixXf V)
+{
+  //make functor
 
-    }
+  int Py = V.cols()/2 , Px = V.rows()/2;
+
+  MatrixXf B = MatrixXf::Zero(A.rows()+(2*Px),A.cols()+(2*Py));
+  B.block (Px,Py,A.rows(),A.cols())=A;
+  cout<<B<<endl<<endl;
+  return MatrixXf::NullaryExpr(8, 8, [&B,&V] (Index i,Index j) {
+        // return (V.array() * B.block (i,j, V.rows(),V.cols()).array()).sum();
+                return pow((V.array() - B.block (i,j, V.rows(),V.cols()).array()),2).sum();
+        });
 }
+
+struct Distance
+{
+     int x;
+     int y;
+};
