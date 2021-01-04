@@ -27,8 +27,6 @@ MatrixXf BlockMatching(MatrixXf A, MatrixXf B, int sx, int sy, int block = 3) {
     MatrixXf Bpad = padding(B, block, block);
 
     MatrixXf::NullaryExpr(A.rows(), A.cols(), [&Apad, &Bpad](Index i, Index j) {
-        MatrixXf A_block = A.block(i, j, block, block)
-
         sx += (block/2);
         sy += (block/2);
 
@@ -40,7 +38,8 @@ MatrixXf BlockMatching(MatrixXf A, MatrixXf B, int sx, int sy, int block = 3) {
         // cout<<xmax<<endl<<ymax<<endl<<xmin<<endl<<ymin<<endl;
         // cout << K.block(xmin,ymin,xmax-xmin+1,ymax-ymin+1) << endl;
         Distance D =
-            SearchSpace(K.block(xmin, ymin, xmax-xmin+1, ymax-ymin+1), A_block);
+            SearchSpace(B.block(xmin, ymin, xmax-xmin+1, ymax-ymin+1),
+                        A.block(i, j, block, block));
         });
 }
 
