@@ -1,15 +1,8 @@
-  // make functor
-  // check size of matrix are same
 
-  //loop through each pixel on image 1
-    // loop through search window size on 2nd image
-        // locate blocks around two imgs
-        // calculate cost of two blocks (sub square sum)
-    // find distance with minimum cost
+#include<algorithm>
 
-MatrixXf Cost( MatrixXf A,  MatrixXf B)
+MatrixXf Cost(MatrixXf A,  MatrixXf B)
 {
-
   int P = V.cols() > V.rows() ? V.cols()/2 : V.rows()/2;
 
   MatrixXf B = MatrixXf::Zero(A.rows()+(2*P), A.cols()+(2*P));
@@ -20,41 +13,51 @@ MatrixXf Cost( MatrixXf A,  MatrixXf B)
         });
 }
 
-MatrixXf BlockMatching(MatrixXf A, MatrixXf B, int sx, int sy, int block = 3){
-    
-    MatrixXf Apad = padding(A,block,block)
-
-    MatrixXf Bpad = padding(B,block,block)
-
-
-    MatrixXf::NullaryExpr(A.rows(), A.cols(), [&Apad, &Bpad] (Index i, Index j) {
-        MatrixXf A_block = A.block(i,j,block,block)
-
-        Distance D = SearchSpace(B,A_block);
-
-        // loop through search window size on 2nd image
-            // locate blocks around two imgs
-            // calculate cost of two blocks (sub square sum)
-        // find distance with minimum cost
+//Algorithm
+  // check size of matrix are same
+  // loop through each pixel on image 1
+    // loop through search window size on 2nd image
+        // locate blocks around two imgs
+        // calculate cost of two blocks (sub square sum)
+    // find distance with minimum cost
 
 
+MatrixXf BlockMatching(MatrixXf A, MatrixXf B, int sx, int sy, int block = 3) {
+    MatrixXf Apad = padding(A, block, block);
+    MatrixXf Bpad = padding(B, block, block);
+
+    MatrixXf::NullaryExpr(A.rows(), A.cols(), [&Apad, &Bpad](Index i, Index j) {
+        MatrixXf A_block = A.block(i, j, block, block)
+
+        sx += (block/2);
+        sy += (block/2);
+
+        int xmax = std::min(i+sx, 10);
+        int ymax = std::min(j+sy, 10);
+        int xmin = std::max(0, j-sx);
+        int ymin = std::max(0, j-sy);
+
+        // cout<<xmax<<endl<<ymax<<endl<<xmin<<endl<<ymin<<endl;
+        // cout << K.block(xmin,ymin,xmax-xmin+1,ymax-ymin+1) << endl;
+        Distance D =
+            SearchSpace(K.block(xmin, ymin, xmax-xmin+1, ymax-ymin+1), A_block);
         });
-
 }
 
-Distance SearchSpace( MatrixXf A,  MatrixXf V)
+Distance SearchSpace(MatrixXf A,  MatrixXf V)
 {
-  //make functor
-
+  // make functor
   int Py = V.cols()/2 , Px = V.rows()/2;
 
-  MatrixXf B = MatrixXf::Zero(A.rows()+(2*Px),A.cols()+(2*Py));
-  B.block (Px,Py,A.rows(),A.cols())=A;
-  cout<<B<<endl<<endl;
-  return MatrixXf::NullaryExpr(8, 8, [&B,&V] (Index i,Index j) {
-        // return (V.array() * B.block (i,j, V.rows(),V.cols()).array()).sum();
-                return pow((V.array() - B.block (i,j, V.rows(),V.cols()).array()),2).sum();
+  MatrixXf B = MatrixXf::Zero(A.rows()+(2*Px), A.cols() + (2*Py));
+  B.block(Px, Py, A.rows(), A.cols()) = A;
+  // cout<<B<<endl<<endl;
+  MatrixXf C = MatrixXf::NullaryExpr(A.rows(), A.cols(), [&B,&V] (Index i,Index j) {
+        return pow((V.array() - B.block(i,j, V.rows(),V.cols()).array()),2).sum();
         });
+  Distance D;
+  cout << "cost :" <<C.minCoeff(&D.x, &D.y) << endl;
+  return D;
 }
 
 struct Distance
