@@ -4,6 +4,9 @@
 #include "stb/stb_image.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb/stb_image_write.h"
+using namespace Eigen;
+using namespace std;
+
 typedef Eigen::Matrix<unsigned char, -1, -1> matrixc;
 typedef Eigen::Map<matrixc > map_mat;
 bool Image::ReadFromDisk(const char* file_name) {
@@ -38,8 +41,63 @@ void Image::WriteToDisk(const char* file_name)
     std::cout << image_data.size();
     Eigen::Matrix<unsigned char, Eigen::Dynamic,
         Eigen::Dynamic> temp = image_data.cast<unsigned char>();
+
+
+
     unsigned char* img = temp.data();
     stbi_write_jpg(file_name, rows_, cols_, 1, img, rows_ * 1);
+    // stbi_image_free(img);
+}
+
+void Image::Write3ToDisk(const char* file_name)
+{
+    if (image_data.isZero(0)) {
+        std::cout << " image matrix is empty" << std::endl;
+        return;
+    }
+    image_data = image_data.cwiseAbs();
+    std::cout << image_data.size();
+    Eigen::MatrixXf R = image_data;
+    Eigen::MatrixXf G = image_data;
+    Eigen::MatrixXf B = Eigen::MatrixXf::Zero(R.rows(), R.cols());
+
+    Eigen::MatrixXf RGB = Eigen::MatrixXf::NullaryExpr(R.rows() * 3, R.cols(), [&R, &G, &B](Eigen::Index i, Eigen::Index j) {
+        // std::cout << i << j << std::endl;
+        int r = i % 3;
+        if (r == 0) {
+            return R.coeff(i / 3, j);
+        }
+        else if (r == 1)
+        {
+            return G.coeff(i / 3, j);
+        }
+        else if (r == 2)
+        {
+            return B.coeff(i / 3, j);
+        }
+
+
+        // std::cout << "rows:" << i << ":" << j << " = " << A.coeff(i % A.rows(), j) << std::endl;
+        // return A.coeff(i % A.rows(), j);
+        });
+    std::cout << std::endl;
+    std::cout << RGB.rows() << std::endl;
+
+    std::cout << RGB.cols() << std::endl;
+
+    std::cout << R.block(0, 0, 10, 10) << std::endl << std::endl;
+
+
+    std::cout << RGB.block(0, 0, 10, 10);
+    Eigen::Matrix<unsigned char, Eigen::Dynamic,
+        Eigen::Dynamic> temp = RGB.cast<unsigned char>();
+    unsigned char* img = temp.data();
+    stbi_write_jpg(file_name, rows_, cols_, 3, img, rows_ * 3);
+
+
+
+    // unsigned char* img = temp.data();
+    // stbi_write_jpg(file_name, rows_, cols_, 1, img, rows_ * 1);
     // stbi_image_free(img);
 }
 

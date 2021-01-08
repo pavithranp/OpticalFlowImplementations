@@ -1,3 +1,4 @@
+// Copyright [2020] <Pavithran Pandiyan>
 #include<algorithm>
 #include"util/Image.h"
 using namespace Eigen;
