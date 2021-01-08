@@ -8,7 +8,7 @@
 #include <fstream>
 
 class Image {
- public:
+public:
   // Constructors
   Image() = default;
 
@@ -19,13 +19,13 @@ class Image {
   // Reading & Writing Images from disk
   bool ReadFromDisk(const char* file_name);
   void WriteToDisk(const char* file_name);
-  void add_padding(int ,int);
+  void add_padding(int, int);
 
- private:
+private:
   // Private member variables
   int rows_ = 0;
   int cols_ = 0;
   int channels_ = 0;
   int max_val_ = 255;
-  
+
 };

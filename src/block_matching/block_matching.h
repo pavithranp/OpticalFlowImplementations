@@ -1,11 +1,12 @@
 #include<algorithm>
+#include"util/Image.h"
 using namespace Eigen;
 using namespace std;
 
 struct Distance
 {
-     int x;
-     int y;
+  int x;
+  int y;
 };
 // Algorithm
   // check size of matrix are same
@@ -15,40 +16,40 @@ struct Distance
         // calculate cost of two blocks (sub square sum)
     // find distance with minimum cost
 
-Distance SearchSpace(const MatrixXf A, const MatrixXf V, Distance &D)
+Distance SearchSpace(const MatrixXf A, const MatrixXf V, Distance& D)
 {
   // make functor
-  int Py = V.cols()/2 , Px = V.rows()/2;
+  int Py = V.cols() / 2, Px = V.rows() / 2;
 
-  MatrixXf B = MatrixXf::Zero(A.rows()+(2*Px), A.cols()+(2*Py));
+  MatrixXf B = MatrixXf::Zero(A.rows() + (2 * Px), A.cols() + (2 * Py));
   B.block(Px, Py, A.rows(), A.cols()) = A;
   // cout<<B<<endl<<endl;
   MatrixXf::NullaryExpr(A.rows(), A.cols(),
-                [&B, &V] (Index i, Index j) {
-                return pow((V.array()
-                        - B.block(i, j, V.rows(), V.cols()).array()), 2).sum();
-                }).minCoeff(&D.x, &D.y);
-  return D;
+    [&B, &V](Index i, Index j) {
+      return pow((V.array()
+        - B.block(i, j, V.rows(), V.cols()).array()), 2).sum();
+    }).minCoeff(&D.x, &D.y);
+    return D;
 }
 void BlockMatching(Image img1, Image img2, int s, int block_size = 3) {
-  img2.add_padding(block_size-1, block_size-1);
+  img2.add_padding(block_size - 1, block_size - 1);
   MatrixXf m;
   Distance D;
   int xmax, ymax, xmin, ymin;
   for (int i = 0; i < img1.get_rows(); i++)
-  for (int j = 0; j < img1.get_cols(); j++) {
+    for (int j = 0; j < img1.get_cols(); j++) {
       m = img2.image_data.block(i, j, block_size, block_size);
       // cout<<m;
       // cout<<i<<" :"<<j;
-      xmax = min(i+s, img1.get_rows()-1);
-      ymax = min(j+s, img1.get_cols()-1);
+      xmax = min(i + s, img1.get_rows() - 1);
+      ymax = min(j + s, img1.get_cols() - 1);
 
-      xmin = max(0, i-s);
-      ymin = max(0, j-s);
+      xmin = max(0, i - s);
+      ymin = max(0, j - s);
 
-    SearchSpace(img1.image_data.block(xmin, ymin, xmax-xmin+1, ymax-ymin+1), m, D);
-    cout << D.x - s  << " " << D.y - s << endl;
-  }
+      SearchSpace(img1.image_data.block(xmin, ymin, xmax - xmin + 1, ymax - ymin + 1), m, D);
+      cout << D.x - s << " " << D.y - s << endl;
+    }
 }
 // void BlockMatching(MatrixXf A, MatrixXf B, int sx, int sy, int block = 3) {
 //     // MatrixXf Apad = padding(A, block/2, block/2);
@@ -70,7 +71,7 @@ void BlockMatching(Image img1, Image img2, int s, int block_size = 3) {
 //                         A.block(i, j, block, block));
 //         cout << D.x << " " << D.y << endl;
 //         });
-    
+
 // }
 
 

@@ -3,7 +3,10 @@ project(opticalFlow VERSION 0.1.0)
 
 include_directories("data")
 include_directories("lib")
+include_directories("lib/stb")
 include_directories("lib/eigen")
+include_directories("src")
+include_directories("src/*")
 enable_testing()
 file(GLOB SOURCES
     lib/*.h
@@ -11,6 +14,8 @@ file(GLOB SOURCES
     lib/stb/*.h
     src/*.h
     src/*.cpp
+    src/*/*.cpp
+    src/*/*.h
 )
 add_executable(opticalFlow main.cpp ${SOURCES})
 
@@ -23,4 +28,4 @@ endif()
 
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2")
