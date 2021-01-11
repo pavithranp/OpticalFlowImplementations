@@ -11,20 +11,22 @@ using namespace std;
 
 int main() {
   // VectorXf kernelY= kernel.transpose();
-  Image x, y;
+  Image x, y, z;
 
   const char* file_ppm1 = "../data/tsu1.pgm";
-  // const char* file_ppm2 = "../data/tsu2.pgm";
+  const char* file_ppm2 = "../data/tsu2.pgm";
   x.ReadFromDisk(file_ppm1);
+  y.ReadFromDisk(file_ppm2);
   // RowVectorXf v = RowVectorXf::LinSpaced(20, 0, 19);
   // cout << "Input:" << endl << v << endl;
   // Map<RowVectorXf, 0, InnerStride<2> > v2(v.data(), v.size());
   // cout << "Even:" << v2 << endl;
-  x.Write3ToDisk("test.jpg");
+
   // y.ReadFromDisk(file_ppm2);
-  // int block_size = 3;
+  int block_size = 3;
   // MatrixXf m;
-  // int s = 2 + 1;
-  // BlockMatching(x, y, s, block_size);
-  cout << "done";
+  int s = 2 + 1;
+  z = BlockMatching(x, y, s, block_size);
+  z.Write3ToDisk("test.jpg");
+  // cout << "done";
 }

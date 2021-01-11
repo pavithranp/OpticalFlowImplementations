@@ -10,12 +10,15 @@
 class Image {
 public:
   // Constructors
+  //add option to initialize with 3 channel arrays
   Image() = default;
 
   // Getter functions
   int get_rows() { return rows_; }
   int get_cols() { return cols_; }
   Eigen::MatrixXf image_data;
+  Eigen::MatrixXf R, G, B;
+
   // Reading & Writing Images from disk
   bool ReadFromDisk(const char* file_name);
   void WriteToDisk(const char* file_name);

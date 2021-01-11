@@ -1,6 +1,7 @@
 // Copyright [2020] <Pavithran Pandiyan>
 #include<algorithm>
 #include"util/Image.h"
+#include "util/color_lib.h"
 using namespace Eigen;
 using namespace std;
 
@@ -32,11 +33,16 @@ Distance SearchSpace(const MatrixXf A, const MatrixXf V, Distance& D)
     }).minCoeff(&D.x, &D.y);
     return D;
 }
-void BlockMatching(Image img1, Image img2, int s, int block_size = 3) {
+Image BlockMatching(Image img1, Image img2, int s, int block_size = 3) {
+  Image y;
+  y.R = MatrixXf(img1.get_rows(), img1.get_cols());
+  y.G = MatrixXf(img1.get_rows(), img1.get_cols());
+  y.B = MatrixXf(img1.get_rows(), img1.get_cols());
+
   img2.add_padding(block_size - 1, block_size - 1);
   MatrixXf m;
   Distance D;
-  int xmax, ymax, xmin, ymin;
+  int xmax, ymax, xmin, ymin, R = 0, G = 0, B = 0;
   for (int i = 0; i < img1.get_rows(); i++)
     for (int j = 0; j < img1.get_cols(); j++) {
       m = img2.image_data.block(i, j, block_size, block_size);
@@ -50,7 +56,16 @@ void BlockMatching(Image img1, Image img2, int s, int block_size = 3) {
 
       SearchSpace(img1.image_data.block(xmin, ymin, xmax - xmin + 1, ymax - ymin + 1), m, D);
       cout << D.x - s << " " << D.y - s << endl;
+
+      vector_to_RGB(D.x, D.y, R, G, B);
+      y.R(i, j) = R;
+      // y.G(i, j) = G;
+      y.B(i, j) = B;
+
+
+
     }
+  return y;
 }
 // void BlockMatching(MatrixXf A, MatrixXf B, int sx, int sy, int block = 3) {
 //     // MatrixXf Apad = padding(A, block/2, block/2);

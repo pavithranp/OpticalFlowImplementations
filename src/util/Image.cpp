@@ -41,9 +41,6 @@ void Image::WriteToDisk(const char* file_name)
     std::cout << image_data.size();
     Eigen::Matrix<unsigned char, Eigen::Dynamic,
         Eigen::Dynamic> temp = image_data.cast<unsigned char>();
-
-
-
     unsigned char* img = temp.data();
     stbi_write_jpg(file_name, rows_, cols_, 1, img, rows_ * 1);
     // stbi_image_free(img);
@@ -51,44 +48,45 @@ void Image::WriteToDisk(const char* file_name)
 
 void Image::Write3ToDisk(const char* file_name)
 {
-    if (image_data.isZero(0)) {
-        std::cout << " image matrix is empty" << std::endl;
-        return;
-    }
-    image_data = image_data.cwiseAbs();
-    std::cout << image_data.size();
-    Eigen::MatrixXf R = image_data;
-    Eigen::MatrixXf G = image_data;
-    Eigen::MatrixXf B = Eigen::MatrixXf::Zero(R.rows(), R.cols());
-
-    Eigen::MatrixXf RGB = Eigen::MatrixXf::NullaryExpr(R.rows() * 3, R.cols(), [&R, &G, &B](Eigen::Index i, Eigen::Index j) {
+    // if (image_data.isZero(0)) {
+    //     std::cout << " image matrix is empty" << std::endl;
+    //     return;
+    // }
+    // image_data = image_data.cwiseAbs();
+    // std::cout << image_data.size();
+    // R = image_data;
+    // G = image_data;
+    // B = Eigen::MatrixXf::Zero(R.rows(), R.cols());
+    rows_ = R.rows();
+    cols_ = R.cols();
+    Eigen::MatrixXf RGB = Eigen::MatrixXf::NullaryExpr(R.rows() * 3, R.cols(), [R_v = R, G_v = G, B_v = B](Eigen::Index i, Eigen::Index j) {
         // std::cout << i << j << std::endl;
         int r = i % 3;
         if (r == 0) {
-            return R.coeff(i / 3, j);
+            return R_v.coeff(i / 3, j);
         }
         else if (r == 1)
         {
-            return G.coeff(i / 3, j);
+            return G_v.coeff(i / 3, j);
         }
         else if (r == 2)
         {
-            return B.coeff(i / 3, j);
+            return B_v.coeff(i / 3, j);
         }
 
 
         // std::cout << "rows:" << i << ":" << j << " = " << A.coeff(i % A.rows(), j) << std::endl;
         // return A.coeff(i % A.rows(), j);
         });
-    std::cout << std::endl;
-    std::cout << RGB.rows() << std::endl;
+    // std::cout << std::endl;
+    // std::cout << RGB.rows() << std::endl;
 
-    std::cout << RGB.cols() << std::endl;
+    // std::cout << RGB.cols() << std::endl;
 
-    std::cout << R.block(0, 0, 10, 10) << std::endl << std::endl;
+    // std::cout << R.block(0, 0, 10, 10) << std::endl << std::endl;
 
 
-    std::cout << RGB.block(0, 0, 10, 10);
+    // std::cout << RGB.block(0, 0, 10, 10);
     Eigen::Matrix<unsigned char, Eigen::Dynamic,
         Eigen::Dynamic> temp = RGB.cast<unsigned char>();
     unsigned char* img = temp.data();
