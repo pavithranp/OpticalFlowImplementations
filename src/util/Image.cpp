@@ -52,11 +52,6 @@ void Image::Write3ToDisk(const char* file_name)
     //     std::cout << " image matrix is empty" << std::endl;
     //     return;
     // }
-    // image_data = image_data.cwiseAbs();
-    // std::cout << image_data.size();
-    // R = image_data;
-    // G = image_data;
-    // B = Eigen::MatrixXf::Zero(R.rows(), R.cols());
     rows_ = R.rows();
     cols_ = R.cols();
     Eigen::MatrixXf RGB = Eigen::MatrixXf::NullaryExpr(R.rows() * 3, R.cols(), [R_v = R, G_v = G, B_v = B](Eigen::Index i, Eigen::Index j) {
@@ -75,31 +70,17 @@ void Image::Write3ToDisk(const char* file_name)
         }
 
 
-        // std::cout << "rows:" << i << ":" << j << " = " << A.coeff(i % A.rows(), j) << std::endl;
         // return A.coeff(i % A.rows(), j);
         });
-    // std::cout << std::endl;
-    // std::cout << RGB.rows() << std::endl;
 
-    // std::cout << RGB.cols() << std::endl;
-
-    // std::cout << R.block(0, 0, 10, 10) << std::endl << std::endl;
-
-
-    // std::cout << RGB.block(0, 0, 10, 10);
     Eigen::Matrix<unsigned char, Eigen::Dynamic,
         Eigen::Dynamic> temp = RGB.cast<unsigned char>();
     unsigned char* img = temp.data();
     stbi_write_jpg(file_name, rows_, cols_, 3, img, rows_ * 3);
-
-
-
-    // unsigned char* img = temp.data();
-    // stbi_write_jpg(file_name, rows_, cols_, 1, img, rows_ * 1);
-    // stbi_image_free(img);
 }
 
 void Image::add_padding(int padX, int padY) {
+    // look for a better way to do this
     int rl = rows_, cl = cols_;
 
     Eigen::MatrixXf B(rl + padX, cl + padY);

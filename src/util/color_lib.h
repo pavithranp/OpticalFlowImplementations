@@ -1,3 +1,4 @@
+// Copyright [2020] <Pavithran Pandiyan>
 #include <math.h>
 
 void vector_to_RGB(float x, float y, int& R, int& G, int& B)
