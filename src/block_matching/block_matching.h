@@ -59,7 +59,7 @@ Image BlockMatching(Image img1, Image img2, int s, int block_size = 3) {
 
       vector_to_RGB(D.x - s, D.y - s, R, G, B);
       y.R(i, j) = R;
-      // y.G(i, j) = G;
+      y.G(i, j) = G;
       y.B(i, j) = B;
 
 

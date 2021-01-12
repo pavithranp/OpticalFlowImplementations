@@ -54,9 +54,9 @@ void Image::Write3ToDisk(const char* file_name)
     // }
     // G = Eigen::MatrixXf::Zero(image_data.rows(), image_data.cols());
     // B = Eigen::MatrixXf::Zero(image_data.rows(), image_data.cols());
-    R = image_data;
-    G = image_data;
-    B = image_data;
+    // R = image_data;
+    // G = image_data;
+    // B = image_data;
     rows_ = R.rows();
     cols_ = R.cols();
     Eigen::MatrixXf RGB = Eigen::MatrixXf::NullaryExpr(R.rows() * 3, R.cols(), [R_v = R, G_v = G, B_v = B](Eigen::Index i, Eigen::Index j) {
