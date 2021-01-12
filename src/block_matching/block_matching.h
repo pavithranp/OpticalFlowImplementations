@@ -55,9 +55,9 @@ Image BlockMatching(Image img1, Image img2, int s, int block_size = 3) {
       ymin = max(0, j - s);
 
       SearchSpace(img1.image_data.block(xmin, ymin, xmax - xmin + 1, ymax - ymin + 1), m, D);
-      cout << D.x - s << " " << D.y - s << endl;
+      // cout << D.x - s << " " << D.y - s;
 
-      vector_to_RGB(D.x, D.y, R, G, B);
+      vector_to_RGB(D.x - s, D.y - s, R, G, B);
       y.R(i, j) = R;
       // y.G(i, j) = G;
       y.B(i, j) = B;
