@@ -7,6 +7,7 @@ include_directories("lib/stb")
 include_directories("lib/eigen")
 include_directories("src")
 include_directories("src/*")
+include_directories("src/*/*")
 enable_testing()
 file(GLOB SOURCES
     lib/*.h

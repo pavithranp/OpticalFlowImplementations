@@ -10,40 +10,6 @@ void vector_to_RGB(float x, float y, int& R, int& G, int& B)
     /* set pi */
     Pi = 2.0 * acos(0.0);
 
-    /* determine amplitude and phase (cut amp at 1) */
-
-    // if (x >= 0 && y >= 0) {
-    //     phi = atan(y / x) * 180 / Pi;
-    // }
-    // else if (x <= 0 && y >= 0) {
-    //     phi = 180 + atan(y / x) * 180 / Pi;
-    // }
-    // else if (x <= 0 && y <= 0) {
-    //     phi = 180 + atan(y / x) * 180 / Pi;
-    // }
-    // else if (x >= 0 && y <= 0) {
-    //     phi = 360 + atan(y / x) * 180 / Pi;
-    // }
-    // if (x == 0 && y == 0) {
-    //     R = 0;
-    //     G = 0;
-    //     B = 0;
-    // }
-    // else {
-    //     if (phi > 180){
-    //         R = abs(((phi - 60) / 360) * amp);
-    //         G = abs(((phi - 300) / 360) * amp);
-    //         B = abs(((phi - 180) / 360) * amp);
-    //     }
-    //     else{
-    //         R = abs(((phi - 60) / 360) * amp);
-    //         G = abs(((phi - 300) / 360) * amp);
-    //         B = abs(((phi - 180) / 360) * amp);
-    //     }
-    //     amp = sqrt(x * x + y * y) * 255 / 10;
-
-    // }
-    // std::cout << x << " " << y << " " << R << " " << G << " " << B << " angle:" << phi << std::endl;
     amp = sqrt(x * x + y * y);
 
     if (amp > 1) amp = 1;
@@ -54,12 +20,7 @@ void vector_to_RGB(float x, float y, int& R, int& G, int& B)
         if (y >= 0.0) phi = atan(y / x);
         else phi = 2.0 * Pi + atan(y / x);
     else phi = Pi + atan(y / x);
-    // if (y >= 0) {
-    //     std::cout << x << " " << y << " " << atan(y / x) * 180 / Pi << std::endl;
-    // }
-    // else {
-    //     std::cout << x << " " << y << " " << -1 * atan(y / x) * 180 / Pi << std::endl;
-    // }
+
     phi = phi / 2.0;
     R = 0;
     G = 0;
