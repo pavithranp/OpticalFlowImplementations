@@ -1,7 +1,23 @@
-// Copyright [2020] <Pavithran Pandiyan>
-#include <math.h>
+#include<iostream>
+#include<Eigen>
+#include "util/color_lib.h"
+using namespace Eigen;
 
-void vector_to_RGB(float x, float y, int& R, int& G, int& B)
+class OpticalFlowMethod
+{
+public:
+    Image y;
+    // two possible functions to call member function. virtual cause derived
+    // classes will use a pointer to an object and a pointer to a member function
+    // to make the function call
+    virtual void operator()(const char* string) = 0;  // call using operator
+    virtual void Call(const char* string) = 0;        // call using function
+
+    void distance_to_RGB(float x, float y, int& R, int& G, int& B)
+
+};
+
+void OpticalFlowMethod::distance_to_RGB(float x, float y, int& R, int& G, int& B)
 {
 
     // HSV to RGB conversion

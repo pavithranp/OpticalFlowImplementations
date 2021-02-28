@@ -1,6 +1,7 @@
 #include<algorithm>
 #include"util/Image.h"
 #include "util/color_lib.h"
+#include "../OpticalFlow.h"
 using namespace Eigen;
 using namespace std;
 
@@ -9,9 +10,13 @@ using namespace std;
   // iteratively solve using jacobian to minimize Functional
 
     // loop through each pixel on image 1
+class HornSchunck : public OpticalFlowMethod {
 
-Image HornSchunck(Image img1, Image img2, int s, int block_size = 3, int alpha_i = 100) {
-    Image y;
+    Image operator()(Image& img1, Image& img2, int s, int block_size = 3, int alpha_i = 100);
+
+};
+Image HornSchunck::operator()(Image& img1, Image& img2, int s, int block_size = 3, int alpha_i = 100) {
+
     y.R = MatrixXf(img1.get_rows() + 2 * s, img1.get_cols() + 2 * s);
     y.G = MatrixXf(img1.get_rows() + 2 * s, img1.get_cols() + 2 * s);
     y.B = MatrixXf(img1.get_rows() + 2 * s, img1.get_cols() + 2 * s);
