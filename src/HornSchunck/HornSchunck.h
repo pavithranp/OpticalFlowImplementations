@@ -1,7 +1,7 @@
 #include<algorithm>
 #include"util/Image.h"
 #include "util/color_lib.h"
-#include "../OpticalFlow.h"
+#include "OpticalFlow.h"
 using namespace Eigen;
 using namespace std;
 
@@ -11,11 +11,17 @@ using namespace std;
 
     // loop through each pixel on image 1
 class HornSchunck : public OpticalFlowMethod {
+public:
+    HornSchunck(int s, int alpha = 100) : s(s), alpha_i(alpha) {
 
-    Image operator()(Image& img1, Image& img2, int s, int block_size = 3, int alpha_i = 100);
+    };
+    Image operator()(Image&, Image&);
+private:
+    int s;
+    int alpha_i;
 
 };
-Image HornSchunck::operator()(Image& img1, Image& img2, int s, int block_size = 3, int alpha_i = 100) {
+Image HornSchunck::operator()(Image& img1, Image& img2) {
 
     y.R = MatrixXf(img1.get_rows() + 2 * s, img1.get_cols() + 2 * s);
     y.G = MatrixXf(img1.get_rows() + 2 * s, img1.get_cols() + 2 * s);
@@ -79,7 +85,7 @@ Image HornSchunck::operator()(Image& img1, Image& img2, int s, int block_size = 
                     - xp * v_old(i + 1, j)
                     - ym * v_old(i, j - 1)
                     - yp * v_old(i, j + 1)) / (sum - J_22(i, j));
-                vector_to_RGB(u, v, R, G, B);
+                distance_to_RGB(u, v, R, G, B);
                 y.R(i, j) = R;
                 y.G(i, j) = G;
                 y.B(i, j) = B;

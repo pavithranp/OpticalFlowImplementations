@@ -2,7 +2,7 @@
 #include <Eigen/Dense>
 #include <iostream>
 #include <math.h>
-// #include "block_matching/block_matching.h"
+#include "block_matching/block_matching.h"
 #include <chrono> 
 #include "HornSchunck/HornSchunck.h"
 #include "util/Image.h"
@@ -32,7 +32,10 @@ int main() {
   // z = BlockMatching(x, y, s, block_size);
 
   auto start = high_resolution_clock::now();
-  z = HornSchunck(x, y, s, block_size);
+  HornSchunck hs(s);
+  z = hs(x, y);
+  // BlockMatching bm(7, 3);
+  // z = bm(x, y);
   auto stop = high_resolution_clock::now();
 
   z.Write3ToDisk("test.jpg");

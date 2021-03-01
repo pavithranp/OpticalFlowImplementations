@@ -1,7 +1,7 @@
 // Copyright [2020] <Pavithran Pandiyan>
 #include<algorithm>
 #include"util/Image.h"
-#include "util/color_lib.h"
+//#include "util/color_lib.h"
 #include "../OpticalFlow.h"
 using namespace Eigen;
 using namespace std;
@@ -16,13 +16,18 @@ using namespace std;
 
 
 class BlockMatching : public OpticalFlowMethod {
-
-  Image operator()(Image img1, Image img2, int s, int block_size = 3);
+public:
+  BlockMatching(int s, int block_size) : s(s), block_size(block_size) {};
+  Image operator()(Image img1, Image img2);
   void SearchSpace(const MatrixXf A, const MatrixXf V, int& x, int& y);
+
+private:
+  int block_size;
+  int s;
 
 };
 
-Image BlockMatching::operator()(Image img1, Image img2, int s, int block_size = 3) {
+Image BlockMatching::operator()(Image img1, Image img2) {
   y.R = MatrixXf(img1.get_rows(), img1.get_cols());
   y.G = MatrixXf(img1.get_rows(), img1.get_cols());
   y.B = MatrixXf(img1.get_rows(), img1.get_cols());
@@ -46,14 +51,10 @@ Image BlockMatching::operator()(Image img1, Image img2, int s, int block_size = 
 
       SearchSpace(img1.image_data.block(xmin, ymin, xmax - xmin + 1, ymax - ymin + 1), m, _x, _y);
 
-
-      vector_to_RGB(_x - s, _y - s, R, G, B);
+      distance_to_RGB(_x - s, _y - s, R, G, B);
       y.R(i, j) = R;
       y.G(i, j) = G;
       y.B(i, j) = B;
-
-
-
     }
   return y;
 }
