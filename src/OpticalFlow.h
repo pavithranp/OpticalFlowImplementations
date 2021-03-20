@@ -14,7 +14,7 @@ public:
     // virtual void Call() = 0;        // call using function
 
     void distance_to_RGB(float x, float y, int& R, int& G, int& B);
-
+    int byte_range(int);
 };
 
 void OpticalFlowMethod::distance_to_RGB(float x, float y, int& R, int& G, int& B)
@@ -25,9 +25,8 @@ void OpticalFlowMethod::distance_to_RGB(float x, float y, int& R, int& G, int& B
     float Pi, amp, phi, alpha, beta;
     /* set pi */
     Pi = 2.0 * acos(0.0);
-
+    /* determine amplitude and phase (cut amp at 1) */
     amp = sqrt(x * x + y * y);
-
     if (amp > 1) amp = 1;
     if (x == 0.0)
         if (y >= 0.0) phi = 0.5 * Pi;
@@ -38,9 +37,7 @@ void OpticalFlowMethod::distance_to_RGB(float x, float y, int& R, int& G, int& B
     else phi = Pi + atan(y / x);
 
     phi = phi / 2.0;
-    R = 0;
-    G = 0;
-    B = 0;
+
     // interpolation between red (0) and blue (0.25 * Pi)
     if ((phi >= 0.0) && (phi < 0.125 * Pi)) {
         beta = phi / (0.125 * Pi);
@@ -75,18 +72,37 @@ void OpticalFlowMethod::distance_to_RGB(float x, float y, int& R, int& G, int& B
     if ((phi >= 0.5 * Pi) && (phi < 0.75 * Pi)) {
         beta = (phi - 0.5 * Pi) / (0.25 * Pi);
         alpha = 1.0 - beta;
+
         R = (int)floor(amp * (alpha * 0.0 + beta * 255.0));
         G = (int)floor(amp * (alpha * 255.0 + beta * 255.0));
-        B = (int)floor(amp * (alpha * 0.0 + beta * 0.0));
+        B = (int)floor(amp * (alpha * 255.0 + beta * 255.0));
+        // B = (int)floor(amp * (alpha * 0.0 + beta * 0.0));
     }
     // interpolation between yellow (0.75 * Pi) and red (Pi)
     if ((phi >= 0.75 * Pi) && (phi <= Pi)) {
         beta = (phi - 0.75 * Pi) / (0.25 * Pi);
         alpha = 1.0 - beta;
-        R = (int)floor(amp * (alpha * 255.0 + beta * 255.0));
+
+        // R = (int)floor(amp * (alpha * 255.0 + beta * 255.0));
+        // R = (int)floor(amp * (alpha * 0.0 + beta * 0.0));
         G = (int)floor(amp * (alpha * 255.0 + beta * 0.0));
         B = (int)floor(amp * (alpha * 0.0 + beta * 0.0));
+        B = (int)floor(amp * (alpha * 255.0 + beta * 255.0));
     }
+    // std::cout << x << " " << y << " " << R << " " << G << " " << B << std::endl;
     // std::cout << x << " " << y << " " << R << " " << G << " " << B << " angle:" << phi << std::endl;
     /* check RGB range */
+
+}
+
+int OpticalFlowMethod::byte_range(
+    /**************************************************************/
+    int a         /* argument                                                   */
+                  /**************************************************************/
+)
+
+/* restricts number to unsigned char range */
+
+{
+    return (a >= 255) * 255 + ((a < 255) && (a > 0)) * a;
 }

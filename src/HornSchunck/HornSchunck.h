@@ -58,7 +58,8 @@ Image HornSchunck::operator()(Image& img1, Image& img2) {
     hx_2 = alpha_i;
     hy_2 = alpha_i;
     int R, G, B;
-    for (int g = 0;g < 1;g++)
+    int iter = 10;
+    for (int g = 0;g < iter + 1;g++)
         for (int i = s; i < img1.get_rows() + s; i++)
             for (int j = s; j < img1.get_cols() + s; j++)
             {
@@ -85,11 +86,17 @@ Image HornSchunck::operator()(Image& img1, Image& img2) {
                     - xp * v_old(i + 1, j)
                     - ym * v_old(i, j - 1)
                     - yp * v_old(i, j + 1)) / (sum - J_22(i, j));
-                distance_to_RGB(u, v, R, G, B);
-                y.R(i, j) = R;
-                y.G(i, j) = G;
-                y.B(i, j) = B;
+                v_old(i, j) = v;
+                u_old(i, j) = u;
+                if (g == iter) {
+                    distance_to_RGB(u, v, R, G, B);
+                    y.R(i, j) = byte_range(G);
+                    y.G(i, j) = byte_range(R);
+                    y.B(i, j) = byte_range(B);
+                }
+
             }
+
 
     return y;
 }

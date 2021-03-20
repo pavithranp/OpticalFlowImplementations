@@ -2,7 +2,7 @@
 #include <Eigen/Dense>
 #include <iostream>
 #include <math.h>
-#include "block_matching/block_matching.h"
+// #include "block_matching/block_matching.h"
 #include <chrono> 
 #include "HornSchunck/HornSchunck.h"
 #include "util/Image.h"
@@ -38,7 +38,7 @@ int main() {
   // z = bm(x, y);
   auto stop = high_resolution_clock::now();
 
-  z.Write3ToDisk("test.jpg");
+  z.Write3ToDisk("test1.jpg");
 
   auto duration = duration_cast<milliseconds>(stop - start);
 
