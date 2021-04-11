@@ -19,6 +19,6 @@ A simple library with Implementations of various OpticalFlow methods using Class
 #### Block Matching with windows size 7
 ![block matching](data/bm.jpg)
 
-#### Horn and Schunk - single iteration with alpha 100
+#### Horn and Schunk - 40 iterations with alpha 100
 ![yos1](data/hs.jpg)
 

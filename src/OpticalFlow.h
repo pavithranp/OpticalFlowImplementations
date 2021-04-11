@@ -13,7 +13,7 @@ public:
     // virtual Image operator()() = 0;  // call using operator
     // virtual void Call() = 0;        // call using function
 
-    void distance_to_RGB(float x, float y, int& R, int& G, int& B);
+    void distance_to_RGB(float x, float y, int& G, int& R, int& B);
     int byte_range(int);
 };
 
@@ -72,22 +72,17 @@ void OpticalFlowMethod::distance_to_RGB(float x, float y, int& R, int& G, int& B
     if ((phi >= 0.5 * Pi) && (phi < 0.75 * Pi)) {
         beta = (phi - 0.5 * Pi) / (0.25 * Pi);
         alpha = 1.0 - beta;
-
         R = (int)floor(amp * (alpha * 0.0 + beta * 255.0));
         G = (int)floor(amp * (alpha * 255.0 + beta * 255.0));
-        B = (int)floor(amp * (alpha * 255.0 + beta * 255.0));
-        // B = (int)floor(amp * (alpha * 0.0 + beta * 0.0));
+        B = (int)floor(amp * (alpha * 0.0 + beta * 0.0));
     }
     // interpolation between yellow (0.75 * Pi) and red (Pi)
     if ((phi >= 0.75 * Pi) && (phi <= Pi)) {
         beta = (phi - 0.75 * Pi) / (0.25 * Pi);
         alpha = 1.0 - beta;
-
-        // R = (int)floor(amp * (alpha * 255.0 + beta * 255.0));
-        // R = (int)floor(amp * (alpha * 0.0 + beta * 0.0));
+        R = (int)floor(amp * (alpha * 255.0 + beta * 255.0));
         G = (int)floor(amp * (alpha * 255.0 + beta * 0.0));
         B = (int)floor(amp * (alpha * 0.0 + beta * 0.0));
-        B = (int)floor(amp * (alpha * 255.0 + beta * 255.0));
     }
     // std::cout << x << " " << y << " " << R << " " << G << " " << B << std::endl;
     // std::cout << x << " " << y << " " << R << " " << G << " " << B << " angle:" << phi << std::endl;

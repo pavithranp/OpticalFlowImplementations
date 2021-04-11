@@ -90,8 +90,8 @@ Image HornSchunck::operator()(Image& img1, Image& img2) {
                 u_old(i, j) = u;
                 if (g == iter) {
                     distance_to_RGB(u, v, R, G, B);
-                    y.R(i, j) = byte_range(G);
-                    y.G(i, j) = byte_range(R);
+                    y.R(i, j) = byte_range(R);
+                    y.G(i, j) = byte_range(G);
                     y.B(i, j) = byte_range(B);
                 }
 
